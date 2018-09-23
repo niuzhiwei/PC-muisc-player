@@ -77,7 +77,13 @@ var Footer={
     },
     render(){
         var _this = this
-        $.getJSON('//api.jirengu.com/fm/getChannels.php').done(function(ret){
+        $.ajax({
+        url:'http://api.jirengu.com/fm/getChannels.php',
+        type:'GET',
+        dataType:'JSON',
+        xhrFields: 
+            {'Access-Control-Allow-Origin': '*' }}
+    ).done(function(ret){
         _this.renderFooter(ret.channels)
     }).fail(function(){
         console.log('error')
@@ -152,8 +158,14 @@ var Fm = {
     },
     loadMusic(callback){
         var _this = this
-       $.getJSON('//api.jirengu.com/fm/getSong.php',{channel:
-       this.channelId}).done(function(ret){
+       $.ajax({url:'http://api.jirengu.com/fm/getSong.php',
+       type:'GET',
+       dataType:'JSON',
+       data:
+       {channel:this.channelId},
+       xhrFields: {  
+        'Access-Control-Allow-Origin': '*' }
+    }).done(function(ret){
            _this.song = ret['song'][0]
            _this.setMusic()
            _this.loadLyirc()
@@ -161,8 +173,12 @@ var Fm = {
     },
     loadLyirc(){
         var _this = this
-       $.getJSON('//jirenguapi.applinzi.com/fm/getLyric.php',{sid:
-       this.song.sid}).done(function(ret){
+       $.ajax({url:'http://jirenguapi.applinzi.com/fm/getLyric.php',
+       type:'GET',
+       dataType:'JSON',
+       data:{sid:this.song.sid},
+       xhrFields: {  
+        'Access-Control-Allow-Origin': '*' } } ).done(function(ret){
            console.log(ret.lyric)
            var lyric = ret.lyric
            var lyricObj = {}
